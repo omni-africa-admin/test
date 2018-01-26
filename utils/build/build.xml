@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TestJenkins" default="ci" basedir="/var/lib/jenkins/workspace/PhpTest">
+    <property name="source" value="src" />
+    <target name="ci"
+        description="Tâche principale d'intégration continue"
+        depends="clean,qa"
+    />
+
+<target name="clean" description="Vide les répertoires d'artefacts">
+    <delete dir="/var/lib/jenkins/workspace/PhpTest/utils/build/api" />
+    <delete dir="/var/lib/jenkins/workspace/PhpTest/utils/build/code-browser" />
+    <delete dir="/var/lib/jenkins/workspace/PhpTest/utils/build/coverage" />
+    <delete dir="/var/lib/jenkins/workspace/PhpTest/utils/build/logs" />
+    <delete dir="/var/lib/jenkins/workspace/PhpTest/utils/build/pdepend" />
+
+    <mkdir dir="/var/lib/jenkins/workspace/PhpTest/utils/build/api" />
+    <mkdir dir="/var/lib/jenkins/workspace/PhpTest/utils/build/code-browser" />
+    <mkdir dir="/var/lib/jenkins/workspace/PhpTest/utils/build/coverage" />
+    <mkdir dir="/var/lib/jenkins/workspace/PhpTest/utils/build/logs" />
+    <mkdir dir="/var/lib/jenkins/workspace/PhpTest/utils/build/pdepend" />
+</target>
+
+<target name="qa" description="Lance les outils d'analyse">
+    <phingcall target="phpmd" />
+</target>
+
+<target name="phpmd">
+    <phpmd file="/var/lib/jenkins/workspace/PhpTest/src">
+        <formatter type="xml" outfile="/var/lib/jenkins/workspace/PhpTest/utils/build/phpmd.xml" />
+    </phpmd>
+</target>
+</project>
